@@ -1,0 +1,32 @@
+# Copyright BigchainDB GmbH and BigchainDB contributors
+# SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
+# Code is Apache-2.0 and docs are CC-BY-4.0
+
+---
+mongodb_package: "mongodb-org"
+mongo_version: "4.2"
+apt_key_fingerprint: "2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5"
+apt_keyserver: "hkp://keyserver.ubuntu.com:80"
+distribution_name: "{{ ansible_distribution|lower }}"
+distribution_codename: "{{ ansible_distribution_release|lower }}"
+distribution_major: "{{ ansible_distribution_major_version }}"
+server_arch: "amd64,arm64"
+
+# MongoDB Repos
+mongodb_apt_repo: "deb [arch={{ server_arch }}] http://repo.mongodb.org/apt/{{ distribution_name }} {{ distribution_codename }}/{{ mongodb_package }}/{{ mongo_version }} multiverse"
+
+# MongoDB running config
+mongodb_storage_path: /data/db
+mongodb_log_path: /var/log/mongodb
+mongodb_config_path: /data/configdb
+directories:
+  - "{{ mongodb_storage_path }}"
+  - "{{ mongodb_log_path }}"
+  - "{{ mongodb_config_path }}"
+
+mongodb_port: 27017
+
+# Docker configuration
+bigchaindb_docker_net: "bigchaindb_docker_net"
+mongodb_docker_name: "mongodb"
+mongodb_host_mount_dir: "{{ home_dir }}/mongodb_docker"

@@ -1,0 +1,10 @@
+.vagrant
+.vagrantd
+bigchaindb
+config
+vagrant_2.2.7_x86_64.deb
+nohup.out
+configuration/hosts/all
+configuration/host_vars
+bigchaindb-errors.log
+bigchaindb.log

@@ -1,0 +1,4 @@
+10.20.30.11 ansible_user=vagrant ansible_password=vagrant
+10.20.30.12 ansible_user=vagrant ansible_password=vagrant
+10.20.30.13 ansible_user=vagrant ansible_password=vagrant
+10.20.30.14 ansible_user=vagrant ansible_password=vagrant
