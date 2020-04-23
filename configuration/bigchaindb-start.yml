@@ -12,15 +12,15 @@
 #   serial: 1
 #   pre_tasks:
 #     - raw: "apt-get -qqy update && apt-get install -qqy python-minimal python-pip || dnf -y install python27 || which python"
-#     - name: Setup for https
-#       apt: 
-#         name: apt-transport-https
+#     # - name: Setup for https
+#     #   apt: 
+#     #     name: apt-transport-https
 #     - name: Gathering Facts
 #       setup: #aka gather_facts
 #   roles:
 # #     # - { role: py36, when: stack_type|lower == "local" }
 # #     # - { role: docker, when: stack_type|lower == "docker" }
-#   #  - mongodb
+#    - mongodb
 
 - hosts: all
   vars_files:
@@ -30,6 +30,7 @@
     home_dir: "{{ home_path }}"
     ansible_python_interpreter: /usr/bin/python3
   roles:
-  #  - tendermint
-  #  - python
+    # - tendermint
+    # - python
     - bigchaindb
+

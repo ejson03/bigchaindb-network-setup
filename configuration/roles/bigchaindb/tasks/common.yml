@@ -11,13 +11,12 @@
     executable: pip3
   tags: [bigchaindb]
 
-- 
 
-# - name: Install BigchainDB
-#   shell: "python3 -m pip install -e /opt/stack/bigchaindb/.[dev] --ignore-installed pyyaml"
-#   register: install_bdb
-#   failed_when: "'FAILED' in install_bdb.stderr or install_bdb.rc != 0" 
-#   tags: [bigchaindb]
+- name: Install BigchainDB
+  shell: "python3 -m pip install -e /opt/stack/bigchaindb/.[dev] --ignore-installed pyyaml --no-cache-dir"
+  register: install_bdb
+  failed_when: "'FAILED' in install_bdb.stderr or install_bdb.rc != 0" 
+  tags: [bigchaindb]
 
 - name: MongoDB Process Check
   shell: pgrep mongod | wc -l
@@ -33,10 +32,6 @@
   shell: pgrep bigchaindb | wc -l
   register: bdb_pchk
   tags: [bigchaindb]
-
-
-- name: restart mongodb
-  shell: "systemctl restart mongodb"
 
 - name: Start BigchainDB
   shell: nohup bigchaindb -l DEBUG start > /tmp/bigchaindb_log_$(date +%Y%m%d_%H%M%S) 2>&1 &

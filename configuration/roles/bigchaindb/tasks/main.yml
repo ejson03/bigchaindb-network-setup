@@ -3,23 +3,78 @@
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
 ---
-- name: Check if Docker is running
-  command: docker info
-  register: info_result
-  ignore_errors: True
-  when: stack_type|lower == "docker" or stack_type|lower == "cloud"
-  tags: [bigchaindb]
+# - name: Check if Docker is running
+#   command: docker info
+#   register: info_result
+#   ignore_errors: True
+#   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
+#   tags: [bigchaindb]
 
-- name: Error! Docker not running
-  fail:
-    msg: "Docker not running."
-  when: (stack_type|lower == "docker" or stack_type|lower == "cloud") and info_result is failed
-  tags: [bigchaindb]
+# - name: Error! Docker not running
+#   fail:
+#     msg: "Docker not running."
+#   when: (stack_type|lower == "docker" or stack_type|lower == "cloud") and info_result is failed
+#   tags: [bigchaindb]
 
-- import_tasks: start.yml
-  when: action|lower == 'start'
-  tags: [bigchaindb]
+# - import_tasks: start.yml
+#   when: action|lower == 'start'
+#   tags: [bigchaindb]
 
-- import_tasks: stop.yml
-  when: action|lower == 'stop'
-  tags: [bigchaindb]
+# - import_tasks: stop.yml
+#   when: action|lower == 'stop'
+#   tags: [bigchaindb]
+
+- name: Create python dev
+  apt:
+    name: python3.6-dev
+    state: present
+    update_cache: no
+
+
+- name: Install Bigchaindb
+  shell: |
+    bash <<EOF
+    pip3 install setproctitle==1.1.10
+    pip3 install -U bigchaindb==2.2.1
+    EOF
+
+- name: Bigchaindb configuration
+  shell: |
+    bash <<EOF
+    
+    bigchaindb -y configure
+
+    sed -i 's/"bind": "localhost:9984"/"bind": "0.0.0.0:9984"/' /root/.bigchaindb
+
+    sed -i 's@"file": "/home/vagrant/bigchaindb.log" @"file": "/var/log/bigchaindb/bigchaindb.log"@' /root/.bigchaindb
+
+    sed -i 's@"error_file": "/home/vagrant/bigchaindb-errors.log" @"error_file": "/var/log/bigchaindb/bigchaindb-errors.log"@' /root/.bigchaindb
+
+    EOF
+
+
+- name: Place systemd unit file
+  template:
+    src: service.j2
+    dest: /lib/systemd/system/bigchaindb.service
+    owner: root
+    group: root
+  become: yes
+
+- name: Enable services
+  shell: |
+    systemctl enable tendermint
+    systemctl enable bigchaindb
+  become: yes
+
+- name: Restart services
+  shell: |
+    systemctl restart tendermint
+    systemctl restart bigchaindb
+  become: yes
+
+- name: Enable nginx
+  shell: |
+    systemctl enable nginx
+    systemctl restart nginx
+  become: yes

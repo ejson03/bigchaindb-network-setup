@@ -48,8 +48,8 @@
 - name: Install mongodb
   apt: name="mongodb" state=present
 
-- name: "apt-get update"
-  apt: update_cache=no
+# - name: "apt-get update"
+#   apt: update_cache=yes
 
 - name: Enable mongodb service
   shell: "systemctl enable mongodb"

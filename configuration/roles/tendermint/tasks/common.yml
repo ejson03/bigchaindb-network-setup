@@ -2,16 +2,28 @@
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
+- name: Delete past logs
+  shell: rm -rf /tmp/tendermint_log_* &&  rm -rf /tmp/bigchaindb_log_*
+
+# - name: Delete past zip files
+#   shell: rm -rf "{{ ansible_env.HOME }}"/*.zip
+
+- name: Delete remote tendermint if present
+  file:
+    path: /usr/local/bin/tendermint
+    state: absent
+  tags: [tendermint]
+
 - name: Download Tendermint Binary
   get_url:
     url: "{{ tendermint_binary_url }}"
-    dest: "{{ ansible_env.HOME }}/tendermint_binary.zip"
+    dest: "{{ ansible_env.HOME }}/tendermint.zip"
     mode: 0755
   tags: [tendermint]
 
 - name: Extract Tendermint Binary
   unarchive:
-    src: "{{ ansible_env.HOME }}/tendermint_binary.zip"
+    src: "{{ ansible_env.HOME }}/tendermint.zip"
     dest: /usr/local/bin
     remote_src: yes
   tags: [tendermint]
@@ -34,7 +46,7 @@
   tags: [tendermint]
 
 - name: Creating files for key exchange
-  template: src=start_tendermint.j2 dest=/home/vagrant/test.sh mode=0755
+  template: src=start_tendermint.j2 dest=/home/vagrant/setup.sh mode=0755
   tags: [tendermint]
 
 - name: Start nginx to host public_key
@@ -47,8 +59,9 @@
   tags: [bigchaindb]
 
 - name: Run tendermint
-  shell: nohup /bin/bash /home/vagrant/test.sh > /tmp/tendermint_log_$(date +%Y%m%d_%H%M%S) 2>&1 &
+  shell: nohup /bin/bash /home/vagrant/setup.sh > /tmp/tendermint_log_$(date +%Y%m%d_%H%M%S) 2>&1 &
   register: run_tendermint
-  when: tm_pchk.stdout| int == 0
+  #when: tm_pchk.stdout| int == 0
   failed_when: "'FAILED' in run_tendermint.stderr or run_tendermint.rc != 0"
   tags: [tendermint]
+
