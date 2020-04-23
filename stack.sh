@@ -9,8 +9,6 @@ set -o nounset
 umask 022
 
 # defaults
-stack_branch=${STACK_BRANCH:="master"}
-stack_repo=${STACK_REPO:="bigchaindb/bigchaindb"}
 stack_size=${STACK_SIZE:=4}
 stack_type=${STACK_TYPE:="local"}
 stack_box_name=${STACK_BOX_NAME="bento/ubuntu-18.04"}
@@ -39,13 +37,6 @@ function finish() {
 	echo "Installation finished at $(date '+%Y-%m-%d %H:%M:%S')"
 }
 trap finish EXIT
-
-export STACK_REPO=$stack_repo
-export STACK_BRANCH=$stack_branch
-echo "Using bigchaindb repo: '$STACK_REPO'"
-echo "Using bigchaindb branch '$STACK_BRANCH'"
-
-git clone https://github.com/${stack_repo}.git -b $stack_branch || true
 
 # Source utility functions
 source ${SCRIPTS_DIR}/functions-common

@@ -63,13 +63,13 @@
 
 - name: Enable services
   shell: |
-    systemctl enable tendermint
     systemctl enable bigchaindb
+    systemctl enable mongodb
   become: yes
 
 - name: Restart services
   shell: |
-    systemctl restart tendermint
+    systemctl restart mongodb
     systemctl restart bigchaindb
   become: yes
 

@@ -2,28 +2,32 @@
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
+# - name: Delete existing directories
+#   file:
+#     path: "{{ item }}"
+#     state: absent
+#   with_items: "{{ directories }}"
+
 - name: Delete past logs
-  shell: rm -rf /tmp/tendermint_log_* &&  rm -rf /tmp/bigchaindb_log_*
+  shell: |
+    rm -rf /tmp/tendermint_log_* &&  rm -rf /tmp/bigchaindb_log_*
+    rm -rf /tendermint/config
+    rm -rf {{ ansible_env.HOME }}/.tendermint
+    rm -rf {{ ansible_env.HOME }}/*.zip
+    rm -rf /usr/local/bin/tendermint
+    rm -rf /home/vagrant/*.sh
 
-# - name: Delete past zip files
-#   shell: rm -rf "{{ ansible_env.HOME }}"/*.zip
-
-- name: Delete remote tendermint if present
-  file:
-    path: /usr/local/bin/tendermint
-    state: absent
-  tags: [tendermint]
 
 - name: Download Tendermint Binary
   get_url:
     url: "{{ tendermint_binary_url }}"
-    dest: "{{ ansible_env.HOME }}/tendermint.zip"
+    dest: "/home/vagrant/tendermint.zip"
     mode: 0755
   tags: [tendermint]
 
 - name: Extract Tendermint Binary
   unarchive:
-    src: "{{ ansible_env.HOME }}/tendermint.zip"
+    src: "/home/vagrant/tendermint.zip"
     dest: /usr/local/bin
     remote_src: yes
   tags: [tendermint]

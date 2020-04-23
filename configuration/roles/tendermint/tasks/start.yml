@@ -69,16 +69,10 @@
 #   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
 #   tags: [tendermint]
 
-- name: Delete existing directories
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items: "{{ directories }}"
 
-
-- import_tasks: debian.yml
-  when: stack_type|lower == "local" and (distribution_name == "debian" or distribution_name == "ubuntu")
-  tags: [tendermint]
+# - import_tasks: debian.yml
+#   when: stack_type|lower == "local" and (distribution_name == "debian" or distribution_name == "ubuntu")
+#   tags: [tendermint]
 
 - import_tasks: common.yml
   when: stack_type|lower == "local"

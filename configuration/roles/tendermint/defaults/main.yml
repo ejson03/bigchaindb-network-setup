@@ -6,7 +6,7 @@ dependencies_key_exchange:
   - nginx
   - jq
 
-tendermint_binary_url: "https://github.com/tendermint/tendermint/releases/download/v0.33.4/tendermint_v0.33.4_linux_amd64.zip"
+tendermint_binary_url: "https://github.com/tendermint/tendermint/releases/download/v0.31.5/tendermint_v0.31.5_linux_amd64.zip"
 
 logs:
   - /tmp/tendermint_log_*

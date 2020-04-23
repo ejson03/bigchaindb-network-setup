@@ -59,7 +59,6 @@ Vagrant.configure("2") do |config|
           config.vbguest.no_remote = true
         end
       end
-      node.vm.synced_folder  "bigchaindb", "/opt/stack/bigchaindb" 
       node.vm.hostname = instance
       node.vm.provision :hosts, :sync_hosts => true
       node.ssh.insert_key = true
