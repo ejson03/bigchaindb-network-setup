@@ -1,0 +1,5 @@
+---
+- name: Instal bigchaindb repo
+  git:
+    repo: "{{ repo_name }}"
+    dest: /usr/app

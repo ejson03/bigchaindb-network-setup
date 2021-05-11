@@ -8,3 +8,5 @@ configuration/hosts/all
 configuration/host_vars
 bigchaindb-errors.log
 bigchaindb.log
+mongodb_docker*/
+tendermint_docker*/

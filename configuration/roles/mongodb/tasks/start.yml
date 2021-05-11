@@ -1,6 +1,3 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
-# SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
-# Code is Apache-2.0 and docs are CC-BY-4.0
 
 ---
 - name: Running MongoDB Docker
@@ -14,7 +11,7 @@
       - name: "{{ bigchaindb_docker_net }}"
     published_ports:
       - "{{ mongodb_port }}"
-    restart_policy: unless-stopped
+    restart_policy: always
     volumes:
       - "{{ mongodb_host_mount_dir }}{{ item|string }}/db:{{ mongodb_storage_path }}"
       - "{{ mongodb_host_mount_dir }}{{ item|string }}/configdb:{{ mongodb_config_path }}"
@@ -25,28 +22,3 @@
   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
   tags: [mongodb]
 
-- name: Creating directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0700
-  with_items: "{{ directories }}"
-  when: stack_type|lower == "local"
-  tags: [mongodb]
-
-- import_tasks: debian.yml
-  when: stack_type|lower == "local" and (distribution_name == "debian" or distribution_name == "ubuntu")
-  tags: [mongodb]
-
-- name: MongoDB Process Check
-  shell: pgrep mongod | wc -l
-  register: command_result
-  when: stack_type|lower == "local"
-  tags: [mongodb]
-
-- name: Run MongoDB
-  shell: nohup mongod > /tmp/mongodb_log_$(date +%Y%m%d_%H%M%S) 2>&1 &
-  register: start_mdb
-  failed_when: "'FAILED' in start_mdb.stderr or start_mdb.rc != 0"
-  when: stack_type|lower == "local" and command_result.stdout| int == 0
-  tags: [mongodb]

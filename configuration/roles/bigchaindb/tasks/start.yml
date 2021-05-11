@@ -1,4 +1,5 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
@@ -6,13 +7,14 @@
 - name: Building BigchainDB Docker
   docker_image:
     name: "{{ bigchaindb_image_name }}"
-    state: build
     tag: "{{bigchaindb_image_tag }}"
-    dockerfile: Dockerfile-alpine
-    path: "{{ home_dir }}/bigchaindb"
-    nocache: yes
-    buildargs:
-      backend: localmongodb
+    state: build
+    build:
+      dockerfile: Dockerfile-alpine
+      path: "{{ home_dir }}"
+      nocache: yes
+      args:
+        backend: localmongodb
   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
   tags: [bigchaindb]
 
@@ -44,10 +46,3 @@
   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
   tags: [bigchaindb]
 
-- import_tasks: debian.yml
-  when: stack_type == "local" and (distribution_name == "debian" or distribution_name == "ubuntu")
-  tags: [bigchaindb]
-
-- import_tasks: common.yml
-  when: stack_type|lower == "local"
-  tags: [bigchaindb]

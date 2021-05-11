@@ -1,4 +1,5 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
@@ -25,13 +26,12 @@
 - name: Add USER to docker group
   user:
     append: yes
-    name: "{{ item }}"
+    name: 
+      - "{{ ansible_hostname }}"
+      - "{{ distribution_name }}"
+      - "vagrant"
     state: present
     group: docker
-  with_items:
-    - "{{ ansible_hostname }}"
-    - "{{ distribution_name }}"
-    - "vagrant"
   tags: [docker]
 
 - name: Start docker service | systemd

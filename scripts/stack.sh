@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
@@ -13,12 +14,24 @@ umask 022
 stack_branch=${STACK_BRANCH:="master"}
 stack_repo=${STACK_REPO:="bigchaindb/bigchaindb"}
 stack_size=${STACK_SIZE:=4}
-stack_type=${STACK_TYPE:="local"}
+stack_type=${STACK_TYPE:="docker"}
 stack_type_provider=${STACK_TYPE_PROVIDER:=""}
+# NOTE versions prior v0.28.0 have different priv_validator format!
 tm_version=${TM_VERSION:="v0.31.5"}
 mongo_version=${MONGO_VERSION:="3.6"}
 stack_vm_memory=${STACK_VM_MEMORY:=2048}
 stack_vm_cpus=${STACK_VM_CPUS:=2}
+stack_box_name=${STACK_BOX_NAME:="ubuntu/xenial64"}
+azure_subscription_id=${AZURE_SUBSCRIPTION_ID:=""}
+azure_tenant_id=${AZURE_TENANT_ID:=""}
+azure_client_secret=${AZURE_CLIENT_SECRET:=""}
+azure_client_id=${AZURE_CLIENT_ID:=""}
+azure_region=${AZURE_REGION:="westeurope"}
+azure_image_urn=${AZURE_IMAGE_URN:="Canonical:UbuntuServer:16.04-LTS:latest"}
+azure_resource_group=${AZURE_RESOURCE_GROUP:="bdb-vagrant-rg-$(date '+%Y-%m-%d')"}
+azure_dns_prefix=${AZURE_DNS_PREFIX:="bdb-instance-$(date '+%Y-%m-%d')"}
+azure_admin_username=${AZURE_ADMIN_USERNAME:="vagrant"}
+azure_vm_size=${AZURE_VM_SIZE:="Standard_D2_v2"}
 ssh_private_key_path=${SSH_PRIVATE_KEY_PATH:=""}
 
 

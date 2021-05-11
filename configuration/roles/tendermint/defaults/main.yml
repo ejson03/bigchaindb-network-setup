@@ -1,16 +1,13 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
 dependencies_key_exchange:
   - nginx
   - jq
-
-tendermint_binary_url: "https://github.com/tendermint/tendermint/releases/download/v0.31.5/tendermint_v0.31.5_linux_amd64.zip"
-
-logs:
-  - /tmp/tendermint_log_*
-  - /tmp/bigchaindb_log_*
+tm_version: "0.31.5"
+tendermint_binary_url: "https://github.com/tendermint/tendermint/releases/download/v{{ tm_version }}/tendermint_{{ tm_version }}_linux_amd64.zip"
 
 # Docker configuration
 tendermint_image_name: "bigchaindb/tendermint"

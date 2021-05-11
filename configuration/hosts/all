@@ -1,4 +1,8 @@
-10.20.30.11 ansible_user=vagrant ansible_password=vagrant
-10.20.30.12 ansible_user=vagrant ansible_password=vagrant
-10.20.30.13 ansible_user=vagrant ansible_password=vagrant
-10.20.30.14 ansible_user=vagrant ansible_password=vagrant
+# Place holder file for users, running Ansible playbooks manually. Otherwise Vagrant
+# populates this dynamically.
+
+# For local host
+DESKTOP-PC9DBTG ansible_connection=local ansible_python_interpreter=/usr/bin/python3
+
+# For remote host(s)
+#<Remote_Host_IP/Hostname> ansible_ssh_user=<USERNAME> ansible_sudo_pass=<ROOT_PASSWORD>

@@ -1,17 +1,17 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
 ---
 - name: Uninstall older versions of Docker | CentOS
   yum:
-    name: "{{ item }}"
+    name: 
+      - docker
+      - docker-common
+      - docker-engine
+      - docker-selinux
     state: absent
-  with_items:
-    - docker
-    - docker-common
-    - docker-engine
-    - docker-selinux
   when: uninstall_old_version
   tags: [docker]
 
@@ -41,14 +41,13 @@
 
 - name: Setup Pre-reqs | CentOS
   yum:
-    name: "{{ item }}"
+    name: 
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      - python-pip
     state: present
-    update_cache: no
-  with_items:
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
-    - python-pip
+    update_cache: yes
   tags: [docker]
 
 - name: Add Docker Repo | CentOS
@@ -66,5 +65,5 @@
   yum:
     name: "{{ docker_pkg }}"
     state: present
-    update_cache: no
+    update_cache: yes
   tags: [docker]

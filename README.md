@@ -2,33 +2,31 @@
 
 Complete steup for generating a BigchainDB network
 
-## Progress
-
-- [x] Install mongodb
-- [x] Install tendermint
-- [x] Install bigchaindb
-- [x] Tendermint P2P setup
-- [ ] Sort bigchain connection issue
-- [ ] Sort validator issue
 
 ## Steps to proceed
 
-Setup Vagrant & Ansible
+Bootstrap System
 ```
-bash stack.sh
-```
-
-Setup only Ansible
-```
-ansible-playbook configuration/bigchaindb-start.yml -i configuration/hosts/all --extra-vars "operation=start home_path=$(pwd)"
+cd pkg/scripts
+bash bootstrap.sh --operation install
 ```
 
-WSL Essential Commands for Vagrant Setup with VirtualBox backend
+Local Ansible Setup
 ```
-export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="<path-to-Vagrantfile"
-export PATH="$PATH:<path-to-oracle>/Oracle/VirtualBox"
-export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+cd pkg/configuration/hosts
 ```
 
+Edit all
+```
+# Delete any existing configuration in this file and insert
+# Hostname of dev machine
+<HOSTNAME> ansible_connection=local
+```
+
+Setup
+```
+cd pkg/configuration
+ansible-playbook bigchaindb-start.yml -i hosts/all --extra-vars "operation=start home_path=$(pwd)"
+```
 
 

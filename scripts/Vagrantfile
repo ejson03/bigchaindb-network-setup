@@ -8,7 +8,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.8.7"
 # Validate if all the required plugins are present
 # vagrant-hostmanager replaced
-required_plugins = ["vagrant-cachier", "vagrant-vbguest", "vagrant-hosts"]
+required_plugins = ["vagrant-cachier", "vagrant-vbguest", "vagrant-hosts", "vagrant-azure"]
 required_plugins.each do |plugin|
   if not Vagrant.has_plugin?(plugin)
     raise "Required vagrant plugin #{plugin} not found. Please run `vagrant plugin install #{plugin}`"

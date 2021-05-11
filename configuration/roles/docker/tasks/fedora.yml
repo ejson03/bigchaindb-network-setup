@@ -1,26 +1,25 @@
-# Copyright BigchainDB GmbH and BigchainDB contributors
+# Copyright © 2020 Interplanetary Database Association e.V.,
+# BigchainDB and IPDB software contributors.
 # SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 # Code is Apache-2.0 and docs are CC-BY-4.0
 
 ---
 - name: Uninstall older versions of Docker | Fedora
   dnf:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - docker-engine-selinux
-    - docker-common
-    - docker-engine
-    - docker-selinux
+    name: 
+      - docker-engine-selinux
+      - docker-common
+      - docker-engine
+      - docker-selinux
+    state: absent    
   when: uninstall_old_version
   tags: [docker]
 
 - name: Setup Pre-reqs | Fedora
   dnf:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - dnf-plugins-core
+    name:
+      - dnf-plugins-core
+    state: present  
   tags: [docker]
 
 - name: Add Docker repo | Fedora
