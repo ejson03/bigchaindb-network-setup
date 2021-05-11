@@ -26,12 +26,13 @@
 - name: Add USER to docker group
   user:
     append: yes
-    name: 
+    name: "{{ item }}"
+    state: present
+    group: docker
+  with_items:
       - "{{ ansible_hostname }}"
       - "{{ distribution_name }}"
       - "vagrant"
-    state: present
-    group: docker
   tags: [docker]
 
 - name: Start docker service | systemd

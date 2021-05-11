@@ -3,8 +3,9 @@
 - name: Building Tendermint Docker
   docker_image:
     name: "{{ tendermint_image_name }}"
-    state: build
+    state: present
     tag: "{{tendermint_image_tag }}"
+    source: build
     build:
       dockerfile: Dockerfile
       path: "{{ home_dir }}/pkg/configuration/roles/tendermint/files"
@@ -24,7 +25,7 @@
       TM_DOCKER_NAME: "{{ tendermint_docker_name }}"
     volumes:
       - "{{ tendermint_host_mount_config_dir }}{{ tendermint_home }}:{{ tendermint_home }}"
-      - "../scripts:/scripts"
+      - "{{ home_dir }}/pkg/scripts:/scripts"
     entrypoint: ''
     command: /usr/bin/env bash -c "/scripts/tm_config_gen"
   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
@@ -46,7 +47,7 @@
       - "{{ tendermint_host_mount_dir }}{{ item|string }}{{ tendermint_home }}:{{ tendermint_home }}"
       - "{{ tendermint_host_mount_dir }}{{ item|string }}{{ tendermint_data }}:{{ tendermint_data }}"
       - "{{ tendermint_host_mount_config_dir }}{{ tendermint_home }}:/tendermint_config"
-      - "../scripts:/scripts"
+      - "{{ home_dir }}/pkg/scripts:/scripts"
     entrypoint: ''
     command: bash -c "/scripts/tm_start"
     env:
@@ -57,6 +58,7 @@
       _ITEM: "{{ item|string }}"
     state: started
     keep_volumes: true
+    restart_policy: always
   with_sequence: start=1 end="{{ stack_size|int }}" stride=1
   when: stack_type|lower == "docker" or stack_type|lower == "cloud"
   tags: [tendermint]

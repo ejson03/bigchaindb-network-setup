@@ -8,7 +8,8 @@
   docker_image:
     name: "{{ bigchaindb_image_name }}"
     tag: "{{bigchaindb_image_tag }}"
-    state: build
+    state: present
+    source: build
     build:
       dockerfile: Dockerfile-alpine
       path: "{{ home_dir }}"
